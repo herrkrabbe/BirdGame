@@ -7,6 +7,7 @@
 #include "UIComponent.generated.h"
 
 class UUserWidget;
+class UBaseUI;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BIRDGAME_API UUIComponent : public UActorComponent
@@ -21,13 +22,22 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditAnywhere, Category = "UI")
-	TSubclassOf<UUserWidget> BaseUIClass;
+	TSubclassOf<UBaseUI> BaseUIClass;
 
-	UUserWidget* SetUIWidget(TSubclassOf<UUserWidget> WidgetClass);
+	UUserWidget* SetUIWidget(TSubclassOf<UBaseUI> WidgetClass);
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	FORCEINLINE UBaseUI* GetUIWidget() { return UIInstance; };
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void UpdateHealth(float HealthPercentage);
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void UpdateComfort(float ComfortPercentage);
 
 protected:
 	UPROPERTY()
-	UUserWidget* UIInstance;
+	UBaseUI* UIInstance;
 
 	UPROPERTY()
 	APlayerController* CurrentPlayer;

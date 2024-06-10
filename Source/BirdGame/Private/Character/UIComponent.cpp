@@ -2,6 +2,8 @@
 
 
 #include "Character/UIComponent.h"
+#include "Character/BaseUI.h"
+#include "Components/ProgressBar.h"
 #include "Blueprint/UserWidget.h"
 
 // Sets default values for this component's properties
@@ -41,13 +43,23 @@ void UUIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 	// ...
 }
 
-UUserWidget* UUIComponent::SetUIWidget(TSubclassOf<UUserWidget> WidgetClass)
+UUserWidget* UUIComponent::SetUIWidget(TSubclassOf<UBaseUI> WidgetClass)
 {
 	if (!UIInstance && !(UIInstance->IsA(WidgetClass)))
 	{
-		UIInstance = CreateWidget<UUserWidget>(CurrentPlayer, WidgetClass);
+		UIInstance = CreateWidget<UBaseUI>(CurrentPlayer, WidgetClass);
 		UIInstance->AddToViewport();
 	}
 	return UIInstance;
+}
+
+void UUIComponent::UpdateHealth(float HealthPercentage)
+{
+	UIInstance->NestHealth->SetPercent(HealthPercentage);
+}
+
+void UUIComponent::UpdateComfort(float ComfortPercentage)
+{
+	UIInstance->NestComfort->SetPercent(ComfortPercentage);
 }
 
