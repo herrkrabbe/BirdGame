@@ -8,6 +8,7 @@
 
 class UCanvasPanel;
 class UProgressBar;
+class UHorizontalBox;
 
 /**
  * 
@@ -24,8 +25,27 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Nest", meta = (BindWidget))
 	UProgressBar* NestComfort;
 
+
+
+	UFUNCTION(BlueprintCallable, Category = "Flight")
+	void SetFlapsTexture(UTexture2D* EnabledFlap, UTexture2D* DisabledFlap);
+
+	UFUNCTION(BlueprintCallable, Category = "Flight")
+	void SetWingFlapsMax(int NewMax);
+
+	UFUNCTION(BlueprintCallable, Category = "Flight")
+	void SetCurrentFlaps(int NewFlaps);
+
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "Organization", meta = (BindWidget))
 	UCanvasPanel* RootCanvas;
+	
+	UPROPERTY()
+	UTexture2D* FlapTexture;
+	UPROPERTY()
+	UTexture2D* NoFlapTexture;
 
+	UPROPERTY(EditAnywhere, Category = "Flight", meta = (BindWidget))
+	UHorizontalBox* WingFlaps;
 };
