@@ -35,6 +35,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void UpdateComfort(float ComfortPercentage);
 
+
+
+	UFUNCTION(BlueprintCallable, Category = "Flight")
+	void SetMaxFlaps(int NewMax);
+
+	UFUNCTION(BlueprintCallable, Category = "Flight")
+	void SetCurrentFlaps(int NewFlaps);
+
+
+	UPROPERTY(EditAnywhere, Category = "Flight", meta = (BindWidget))
+	UTexture2D* WingFlap;
+
+	UPROPERTY(EditAnywhere, Category = "Flight", meta = (BindWidget))
+	UTexture2D* SpentWingFlap;
+
 protected:
 	UPROPERTY()
 	UBaseUI* UIInstance;
@@ -44,7 +59,4 @@ protected:
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-
-		
 };

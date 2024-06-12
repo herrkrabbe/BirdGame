@@ -49,6 +49,12 @@ UUserWidget* UUIComponent::SetUIWidget(TSubclassOf<UBaseUI> WidgetClass)
 	{
 		UIInstance = CreateWidget<UBaseUI>(CurrentPlayer, WidgetClass);
 		UIInstance->AddToViewport();
+
+		if (WingFlap && SpentWingFlap)
+		{
+			UIInstance->SetFlapsTexture(WingFlap, SpentWingFlap);
+			UIInstance->SetWingFlapsMax(3);
+		}
 	}
 	return UIInstance;
 }
@@ -61,5 +67,15 @@ void UUIComponent::UpdateHealth(float HealthPercentage)
 void UUIComponent::UpdateComfort(float ComfortPercentage)
 {
 	UIInstance->NestComfort->SetPercent(ComfortPercentage);
+}
+
+void UUIComponent::SetMaxFlaps(int NewMax)
+{
+	UIInstance->SetWingFlapsMax(NewMax);
+}
+
+void UUIComponent::SetCurrentFlaps(int NewFlaps)
+{
+	UIInstance->SetCurrentFlaps(NewFlaps);
 }
 
