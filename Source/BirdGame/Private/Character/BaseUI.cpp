@@ -42,7 +42,7 @@ void UBaseUI::SetWingFlapsMax(int NewMax)
 void UBaseUI::SetCurrentFlaps(int NewFlaps)
 {
 	int MaxFlaps = WingFlaps->GetChildrenCount();
-	int CurrentFlaps = NewFlaps > MaxFlaps ? MaxFlaps : NewFlaps < 1 ? 1 : NewFlaps;
+	int CurrentFlaps = NewFlaps > MaxFlaps ? MaxFlaps : NewFlaps < 0 ? 0 : NewFlaps;
 	for (size_t i = 0; i < CurrentFlaps; i++)
 	{
 		if (UImage* FlapWidget = Cast<UImage>(WingFlaps->GetChildAt(i)))
