@@ -3,27 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Items/AbstractItem.h"
 #include "GameFramework/Actor.h"
-#include "AAbstractNest.generated.h"
+#include "Item.generated.h"
 
 UCLASS()
-class BIRDGAME_API AAAbstractNest : public AActor
+class BIRDGAME_API AItem : public AAbstractItem
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AAAbstractNest();
-	float Durability;
-	float Comfort;
-
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+	// Sets default values for this actor's properties
+	AItem();
+
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

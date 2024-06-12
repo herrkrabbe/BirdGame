@@ -4,27 +4,37 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "AAbstractItem.generated.h"
+#include "AbstractItem.generated.h"
 
-UCLASS()
+
+UCLASS(Abstract)
 class BIRDGAME_API AAbstractItem : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+protected:
 	// Sets default values for this actor's properties
 	AAbstractItem();
+public:	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool PickedUp = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float myDurability;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float myComfort;
-
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
+	class UStaticMeshComponent* ItemMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
+	class USphereComponent* ItemCollision;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 
 };

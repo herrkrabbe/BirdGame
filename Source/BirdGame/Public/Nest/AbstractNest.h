@@ -4,16 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ACharacter.generated.h"
+#include "AbstractNest.generated.h"
 
-UCLASS()
-class BIRDGAME_API AACharacter : public AActor
+UCLASS(Abstract)
+class BIRDGAME_API AAbstractNest : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+protected:
 	// Sets default values for this actor's properties
-	AACharacter();
+	AAbstractNest();
+public:	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float Durability;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    float Comfort;
 
 protected:
 	// Called when the game starts or when spawned
