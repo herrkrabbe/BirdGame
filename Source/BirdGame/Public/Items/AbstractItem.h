@@ -18,9 +18,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool PickedUp = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float myDurability;
+	float myDurability = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float myComfort;
+	float myComfort = 0;
 
 protected:
 	// Called when the game starts or when spawned

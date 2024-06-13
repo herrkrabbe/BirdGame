@@ -15,9 +15,11 @@ protected:
 	AAbstractNest();
 public:	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float Durability;
+	float Durability = 0;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-    float Comfort;
+    float Comfort = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DegradationSpeed = 1;
 
 protected:
 	// Called when the game starts or when spawned
