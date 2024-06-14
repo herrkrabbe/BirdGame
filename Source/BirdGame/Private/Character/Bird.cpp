@@ -32,3 +32,16 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ABird::Pitch(FInputActionValue& pitch)
+{
+}
+
+void ABird::Roll(FInputActionValue& roll)
+{
+}
+
+float ABird::AddLift()
+{
+	return 0.0f;
+}
+
