@@ -52,6 +52,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	APlayerController* PlayerController;
+	//UEnhancedInputLocalPlayerSubsystem* Subsystem;
+
+
+
 private:
 	void Pitch(FInputActionValue& Value);
 	void Roll(FInputActionValue& Value);
