@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "InputMappingContext.h"
+#include "InputMappingContext.h"
 #include "GameFramework/Character.h"
 #include "Components/SphereComponent.h"
 #include "Bird.generated.h"
@@ -29,8 +29,29 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* BirdMesh;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	//UInputMappingContext* IMC_Bird;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputMappingContext* IMC_Bird;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* PitchAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* RollAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* YawAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* DropItemAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* FlapAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* SoarAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USphereComponent* ItemCollision;
