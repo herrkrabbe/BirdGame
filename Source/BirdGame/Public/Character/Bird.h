@@ -26,15 +26,28 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCameraComponent* PlayerCamera;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USkeletalMeshComponent* BirdMesh;
+
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	//UInputMappingContext* IMC_Bird;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USphereComponent* ItemCollision;
 
-	bool HasItem();
+	USkeletalMeshComponent* GetBirdMesh() const;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
+	bool HasItem = false;
+
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	void SetHasItem(bool HasNewItem);
+
+	UFUNCTION(BlueprintCallable, Category = "Item")
+	bool GetHasItem();
+
 	//AAbstractItem* GetItem();
-	//bool SetItem(AAbstractItem*); 
+
 
 protected:
 	// Called when the game starts or when spawned

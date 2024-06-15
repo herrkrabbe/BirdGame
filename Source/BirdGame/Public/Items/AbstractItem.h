@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "BirdGame/Public/Character/Bird.h"
 #include "AbstractItem.generated.h"
 
 
@@ -36,5 +37,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	ABird* Bird;
+	UFUNCTION(Blueprintable, BlueprintCallable, Category = "WeaponModel")
+	void AttachComponentToPlayer(ABird* TargetCharacter);
 
 };

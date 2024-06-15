@@ -35,3 +35,16 @@ void AAbstractItem::Tick(float DeltaTime)
 
 }
 
+void AAbstractItem::AttachComponentToPlayer(ABird* TargetCharacter)
+{
+	Bird = TargetCharacter;
+	if (Bird == nullptr || Bird->GetHasItem())
+	{
+		FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
+		AttachToComponent(Bird->GetBirdMesh(), AttachmentRules, FName(TEXT("AttachSocket")));
+
+		Bird->SetHasItem(true);
+	}
+
+}
+
