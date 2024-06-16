@@ -39,6 +39,8 @@ public:
 
 	ABird* Bird;
 	UFUNCTION(Blueprintable, BlueprintCallable, Category = "WeaponModel")
-	void AttachComponentToPlayer(ABird* TargetCharacter);
+	void AttachComponentToBird(ABird* TargetCharacter);
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon function")
+	void DropItem();
 };

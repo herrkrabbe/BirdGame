@@ -3,6 +3,7 @@
 
 #include "Character/Bird.h"
 
+
 // Sets default values
 ABird::ABird()
 {
@@ -52,16 +53,53 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ABird::Pitch(FInputActionValue& pitch)
+void ABird::Pitch(const FInputActionValue& Value)
 {
+	//pitch is current rotation y?
+	FVector2D PitchVector = Value.Get<FVector2D>();
+
+	if (Controller != nullptr)
+	{
+		AddControllerPitchInput((PitchVector.Y));
+
+	}
+	
 }
 
-void ABird::Roll(FInputActionValue& roll)
+void ABird::Roll(const FInputActionValue& Value)
 {
+	//roll is current rotation x?
+	FVector2D RollVector = Value.Get<FVector2D>();
+
+	if (Controller != nullptr)
+	{
+		AddControllerYawInput((RollVector.X));
+
+	}
 }
 
-float ABird::AddLift()
+
+void ABird::Yaw(const FInputActionValue& Value)
 {
+	//current rotation z
+	FVector2D YawVector = Value.Get<FVector2D>();
+	if (Controller != nullptr)
+	{
+		//AddControllerYawInput((YawVector.Z));
+
+	}
+}
+
+
+float ABird::AddLift(const FInputActionValue& Value)
+{
+	FVector2D LiftVector = Value.Get<FVector2D>();
+
+	if (Controller != nullptr)
+	{
+		AddMovementInput(GetActorForwardVector(), LiftVector.Y);
+
+	}
 	return 0.0f;
 }
 

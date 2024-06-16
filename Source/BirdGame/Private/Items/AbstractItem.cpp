@@ -35,7 +35,7 @@ void AAbstractItem::Tick(float DeltaTime)
 
 }
 
-void AAbstractItem::AttachComponentToPlayer(ABird* TargetCharacter)
+void AAbstractItem::AttachComponentToBird(ABird* TargetCharacter)
 {
 	Bird = TargetCharacter;
 	if (Bird == nullptr || Bird->GetHasItem())
@@ -46,5 +46,22 @@ void AAbstractItem::AttachComponentToPlayer(ABird* TargetCharacter)
 		Bird->SetHasItem(true);
 	}
 
+	/*if (APlayerController* BirdController = Cast<APlayerController>(Character->GetController()))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(IMC_Bird, 4);
+		}
+		UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent);
+
+		if (EnhancedInputComponent)
+		{
+			EnhancedInputComponent->BindAction(DropItemAction, ETriggerEvent::Triggered, this, &AAbstractItem::DropItem);
+		}
+	}*/
+}
+
+void AAbstractItem::DropItem()
+{
 }
 

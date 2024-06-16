@@ -6,6 +6,13 @@
 #include "InputMappingContext.h"
 #include "GameFramework/Character.h"
 #include "Components/SphereComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputAction.h"
+#include "Camera/CameraComponent.h"
+#include "Components/InputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Bird.generated.h"
 
 struct FInputActionValue;
@@ -33,7 +40,7 @@ public:
 	UInputMappingContext* IMC_Bird;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* MoveAction;
+	UInputAction* LiftAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* PitchAction;
@@ -67,7 +74,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	bool GetHasItem();
 
-	//AAbstractItem* GetItem();
+	//APlayerController* PlayerController;
+	//UEnhancedInputLocalPlayerSubsystem* Subsystem;
+
 
 
 protected:
@@ -86,16 +95,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	APlayerController* PlayerController;
+	APlayerController* BirdController;
 	//UEnhancedInputLocalPlayerSubsystem* Subsystem;
 
 
 
 private:
-	void Pitch(FInputActionValue& Value);
-	void Roll(FInputActionValue& Value);
-	float AddLift();
-
-
+	void Pitch(const FInputActionValue& Value);
+	void Roll(const FInputActionValue& Value);
+	void Move(const FInputActionValue& Value);
+	void Yaw(const FInputActionValue& Value);
+	float AddLift(const FInputActionValue& Value);
 
 };
