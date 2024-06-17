@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "InputMappingContext.h"
-#include "GameFramework/Character.h"
 #include "Components/SphereComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -36,6 +35,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* BirdMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USphereComponent* ItemCollision;
+
+	USkeletalMeshComponent* GetBirdMesh() const;
+
+	/*INPUT*/
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputMappingContext* IMC_Bird;
 
@@ -60,10 +66,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* SoarAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USphereComponent* ItemCollision;
 
-	USkeletalMeshComponent* GetBirdMesh() const;
+	/*ITEM */
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
 	bool HasItem = false;
@@ -74,8 +78,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	bool GetHasItem();
 
-	//APlayerController* PlayerController;
-	//UEnhancedInputLocalPlayerSubsystem* Subsystem;
+	APlayerController* PlayerController;
+	UEnhancedInputLocalPlayerSubsystem* Subsystem;
 
 
 

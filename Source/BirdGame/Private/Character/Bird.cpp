@@ -11,10 +11,14 @@ ABird::ABird()
 	PrimaryActorTick.bCanEverTick = true;
 	BirdMesh = GetBirdMesh();
 	//BirdMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
+
+
 	ItemCollision = CreateDefaultSubobject<USphereComponent>(TEXT("ItemCollision"));
 	RootComponent = BirdMesh;
 	ItemCollision->SetupAttachment(RootComponent);
 	//BirdMesh->SetGenerateOverlapEvents(true);
+
+
 }
 
 USkeletalMeshComponent* ABird::GetBirdMesh() const
@@ -36,7 +40,18 @@ bool ABird::GetHasItem()
 void ABird::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	PlayerController = Cast<APlayerController>(Controller);
+	Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+	//Adding the Input Context
+	if (PlayerController)
+	{
+		if (Subsystem)
+		{
+			Subsystem->AddMappingContext(IMC_Bird, 0);
+		}
+	}
 }
 
 // Called every frame
@@ -49,8 +64,14 @@ void ABird::Tick(float DeltaTime)
 // Called to bind functionality to input
 void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	//Super::SetupPlayerInputComponent(PlayerInputComponent);
+	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
+	if (EnhancedInputComponent)
+	{
+		EnhancedInputComponent->BindAction(PitchAction, ETriggerEvent::Triggered, this, &ABird::Pitch);
+		
+	}
 }
 
 void ABird::Pitch(const FInputActionValue& Value)

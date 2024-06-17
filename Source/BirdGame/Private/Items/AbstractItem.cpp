@@ -25,7 +25,7 @@ AAbstractItem::AAbstractItem()
 void AAbstractItem::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	ItemCollision->OnComponentBeginOverlap.AddDynamic(this, &AAbstractItem::OnBeginOverlap);
 }
 
 // Called every frame
@@ -63,5 +63,15 @@ void AAbstractItem::AttachComponentToBird(ABird* TargetCharacter)
 
 void AAbstractItem::DropItem()
 {
+}
+
+void AAbstractItem::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	Bird = Cast<ABird>(OtherActor);
+	if (Bird != nullptr)
+	{
+		AttachComponentToBird(Bird);
+		
+	}
 }
 
