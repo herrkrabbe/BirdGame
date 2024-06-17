@@ -7,10 +7,11 @@
 #include "Components/SphereComponent.h"
 //#include "EnhancedInputComponent.h"
 //#include "EnhancedInputSubsystems.h"
-//#include "InputAction.h"
+#include "InputAction.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 //#include "Components/InputComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
+//#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Bird.generated.h"
 
@@ -99,7 +100,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	APlayerController* BirdController;
+	//APlayerController* BirdController;
 	//UEnhancedInputLocalPlayerSubsystem* Subsystem;
 
 
