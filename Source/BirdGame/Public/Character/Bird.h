@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InputMappingContext.h"
+//#include "InputMappingContext.h"
 #include "Components/SphereComponent.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
-#include "InputAction.h"
+//#include "EnhancedInputComponent.h"
+//#include "EnhancedInputSubsystems.h"
+//#include "InputAction.h"
 #include "Camera/CameraComponent.h"
-#include "Components/InputComponent.h"
+//#include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Bird.generated.h"
@@ -43,7 +43,7 @@ public:
 	/*INPUT*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputMappingContext* IMC_Bird;
+	//UInputMappingContext* IMC_Bird;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* LiftAction;
@@ -78,8 +78,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	bool GetHasItem();
 
-	APlayerController* PlayerController;
-	UEnhancedInputLocalPlayerSubsystem* Subsystem;
+	//APlayerController* PlayerController;
+	//UEnhancedInputLocalPlayerSubsystem* Subsystem;
 
 
 

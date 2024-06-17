@@ -41,9 +41,8 @@ void ABird::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PlayerController = Cast<APlayerController>(Controller);
+	/*PlayerController = Cast<APlayerController>(Controller);
 	Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-
 	//Adding the Input Context
 	if (PlayerController)
 	{
@@ -52,6 +51,8 @@ void ABird::BeginPlay()
 			Subsystem->AddMappingContext(IMC_Bird, 0);
 		}
 	}
+*/
+	
 }
 
 // Called every frame
@@ -65,62 +66,62 @@ void ABird::Tick(float DeltaTime)
 void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	//Super::SetupPlayerInputComponent(PlayerInputComponent);
-	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	/*UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
 	if (EnhancedInputComponent)
 	{
 		EnhancedInputComponent->BindAction(PitchAction, ETriggerEvent::Triggered, this, &ABird::Pitch);
 		
-	}
+	}*/
 }
 
 void ABird::Pitch(const FInputActionValue& Value)
 {
 	//pitch is current rotation y?
-	FVector2D PitchVector = Value.Get<FVector2D>();
+	/*FVector2D PitchVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
 		AddControllerPitchInput((PitchVector.Y));
 
-	}
+	}*/
 	
 }
 
 void ABird::Roll(const FInputActionValue& Value)
 {
 	//roll is current rotation x?
-	FVector2D RollVector = Value.Get<FVector2D>();
-
+	//FVector2D RollVector = Value.Get<FVector2D>();
+/*
 	if (Controller != nullptr)
 	{
 		AddControllerYawInput((RollVector.X));
 
-	}
+	}*/
 }
 
 
 void ABird::Yaw(const FInputActionValue& Value)
 {
 	//current rotation z
-	FVector2D YawVector = Value.Get<FVector2D>();
-	if (Controller != nullptr)
+	//FVector2D YawVector = Value.Get<FVector2D>();
+	/*if (Controller != nullptr)
 	{
 		//AddControllerYawInput((YawVector.Z));
 
-	}
+	}*/
 }
 
 
 float ABird::AddLift(const FInputActionValue& Value)
 {
-	FVector2D LiftVector = Value.Get<FVector2D>();
+	//FVector2D LiftVector = Value.Get<FVector2D>();
 
-	if (Controller != nullptr)
+	/*if (Controller != nullptr)
 	{
 		AddMovementInput(GetActorForwardVector(), LiftVector.Y);
 
 	}
-	return 0.0f;
+	return 0.0f;*/
 }
 
