@@ -42,7 +42,7 @@ public:
 
 	/*INPUT*/
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	//UInputMappingContext* IMC_Bird;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
