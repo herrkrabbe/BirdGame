@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/InputComponent.h"
@@ -32,12 +33,19 @@ public:
 	UCameraComponent* PlayerCamera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USpringArmComponent* CameraSpringArm;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FirstSpringarm")
+	float StartSpringArmDistance = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* BirdMesh;
 
 	USkeletalMeshComponent* GetBirdMesh() const;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USphereComponent* BirdCollision;
+
 
 	/*INPUT*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
@@ -49,6 +57,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* JumpAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* LookAroundAction;
 
 	APlayerController* BirdController;
 	UEnhancedInputLocalPlayerSubsystem* Subsystem;
@@ -66,10 +76,9 @@ public:
 	bool GetHasItem();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	bool HasJumped = false;
+	bool IsFlying = false;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
-	bool HasLanded = true;
+	
 
 	/*QUATERNION*/
 
@@ -88,5 +97,6 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& Value);
-	
+	void LookAround(const FInputActionValue& Value);
+	void Land();
 };

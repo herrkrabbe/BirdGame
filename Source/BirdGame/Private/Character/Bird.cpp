@@ -9,12 +9,28 @@ ABird::ABird()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	/*Mesh*/
 	BirdMesh = GetBirdMesh();
 
+	/*Collision*/
 	BirdCollision = CreateDefaultSubobject<USphereComponent>(TEXT("ItemCollision"));
 	RootComponent = BirdMesh;
 	BirdCollision->SetupAttachment(RootComponent);
 	
+	/*Springarm*/
+	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraSpringArm->SetupAttachment(RootComponent);
+	CameraSpringArm->TargetArmLength = StartSpringArmDistance; // The  camera follows at this distance behind the character	
+	CameraSpringArm->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraSpringArm->bEnableCameraLag = true;//Makes the camera movement feel smoother
+
+	/*Camera Component*/
+	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	PlayerCamera->SetupAttachment(CameraSpringArm, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	PlayerCamera->AttachToComponent(CameraSpringArm, FAttachmentTransformRules::KeepRelativeTransform);
+	PlayerCamera->bUsePawnControlRotation = true;
+
+
 }
 
 // Called when the game starts or when spawned
@@ -29,9 +45,11 @@ void ABird::BeginPlay()
 void ABird::Move(const FInputActionValue& Value)
 {
 	const FVector2D MovementVector = Value.Get<FVector2D>();
-	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-	AddMovementInput(GetActorRightVector(), MovementVector.X);
-
+	if (Controller != nullptr) {
+		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+		AddMovementInput(GetActorRightVector(), MovementVector.X);
+	}
+	
 	//checking if rotation works. move to flight later. 
 	//float QuaternionRotation = Quaternion->q.X;
 	//const FRotator PitchRotation(QuaternionRotation,0.0f,0.0f );
@@ -42,8 +60,8 @@ void ABird::Move(const FInputActionValue& Value)
 void ABird::Jump(const FInputActionValue& Value)
 {
 	//trigger fly IMC here 
-	//bool HasJumped = true;
-	//bool HasLanded = false;
+	IsFlying = true;
+	
 	/*if (BirdController)
 	{
 		if (Subsystem)
@@ -53,6 +71,21 @@ void ABird::Jump(const FInputActionValue& Value)
 			
 		}
 	}*/
+}
+
+void ABird::LookAround(const FInputActionValue& Value)
+{
+	FVector2D LookAroundVector = Value.Get<FVector2D>();
+	if (Controller != nullptr)
+	{
+		AddControllerYawInput(LookAroundVector.X);
+		AddControllerPitchInput((LookAroundVector.Y));
+	}
+}
+
+void ABird::Land()
+{
+	IsFlying = false;
 }
 
 USkeletalMeshComponent* ABird::GetBirdMesh() const
@@ -99,6 +132,7 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	
 	if (EnhancedInputComponent) {
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
+		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ABird::LookAround);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABird::Jump);
 	}
 	
