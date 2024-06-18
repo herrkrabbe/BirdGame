@@ -44,6 +44,15 @@ void ABird::Jump(const FInputActionValue& Value)
 	//trigger fly IMC here 
 	//bool HasJumped = true;
 	//bool HasLanded = false;
+	/*if (BirdController)
+	{
+		if (Subsystem)
+		{
+			//Subsystem->RemoveMappingContext(IMC_Ground);
+			Subsystem->AddMappingContext(IMC_Bird, 0);
+			
+		}
+	}*/
 }
 
 USkeletalMeshComponent* ABird::GetBirdMesh() const
@@ -72,7 +81,19 @@ void ABird::Tick(float DeltaTime)
 void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
+	BirdController = Cast<APlayerController>(Controller);
+	Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(BirdController->GetLocalPlayer());
+
+	//Adding the Input Context
+	if (BirdController)
+	{
+		if (Subsystem)
+		{
+			Subsystem->AddMappingContext(IMC_Ground, 0);
+		}
+	}
+
+
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
 	
