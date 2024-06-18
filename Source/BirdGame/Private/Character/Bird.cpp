@@ -21,7 +21,29 @@ ABird::ABird()
 void ABird::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+
+
+}
+
+void ABird::Move(const FInputActionValue& Value)
+{
+	const FVector2D MovementVector = Value.Get<FVector2D>();
+	AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+	AddMovementInput(GetActorRightVector(), MovementVector.X);
+
+	//checking if rotation works. move to flight later. 
+	//float QuaternionRotation = Quaternion->q.X;
+	//const FRotator PitchRotation(QuaternionRotation,0.0f,0.0f );
+	//AddMovementInput(GetActorRightVector(), PitchRotation.X);  OR RATHER AddMovementInput(FVector(q.X, 0.0f, 0.0f);
+
+}
+
+void ABird::Jump(const FInputActionValue& Value)
+{
+	//trigger fly IMC here 
+	//bool HasJumped = true;
+	//bool HasLanded = false;
 }
 
 USkeletalMeshComponent* ABird::GetBirdMesh() const
@@ -50,6 +72,14 @@ void ABird::Tick(float DeltaTime)
 void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
+	
+	if (EnhancedInputComponent) {
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABird::Jump);
+	}
+	
 }
 
