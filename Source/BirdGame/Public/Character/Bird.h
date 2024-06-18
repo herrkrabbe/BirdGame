@@ -29,14 +29,16 @@ class BIRDGAME_API ABird : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABird();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	UCameraComponent* PlayerCamera;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	USpringArmComponent* CameraSpringArm;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FirstSpringarm")
-	float StartSpringArmDistance = 100.0f;
+	//USceneComponent as root
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float StartSpringArmDistance = 300.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* BirdMesh;

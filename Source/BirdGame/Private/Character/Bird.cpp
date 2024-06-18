@@ -23,6 +23,7 @@ ABird::ABird()
 	CameraSpringArm->TargetArmLength = StartSpringArmDistance; // The  camera follows at this distance behind the character	
 	CameraSpringArm->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 	CameraSpringArm->bEnableCameraLag = true;//Makes the camera movement feel smoother
+	//CameraSpringArm->bDoCollisionTest = false; 
 
 	/*Camera Component*/
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
@@ -30,6 +31,10 @@ ABird::ABird()
 	PlayerCamera->AttachToComponent(CameraSpringArm, FAttachmentTransformRules::KeepRelativeTransform);
 	PlayerCamera->bUsePawnControlRotation = true;
 
+	
+	bUseControllerRotationYaw = false;
+	
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 
 }
 
@@ -133,7 +138,8 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (EnhancedInputComponent) {
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
 		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ABird::LookAround);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABird::Jump);
+		//read comment below on the right 
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABird::Jump); //just pressed once instead of triggered?
 	}
 	
 }
