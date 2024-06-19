@@ -3,6 +3,7 @@
 
 #include "Items/AbstractItem.h"
 #include "Components/SphereComponent.h"
+#include "Engine/EngineTypes.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -40,7 +41,7 @@ void AAbstractItem::AttachComponentToBird(ABird* TargetCharacter)
 	Bird = TargetCharacter;
 	if (Bird != nullptr || Bird->GetHasItem())
 	{
-		FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
+		FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true); //SnapToTargetNotIncludingScale
 		AttachToComponent(Bird->GetMesh(), AttachmentRules, FName(TEXT("AttachSocket")));
 
 		Bird->SetHasItem(true);
