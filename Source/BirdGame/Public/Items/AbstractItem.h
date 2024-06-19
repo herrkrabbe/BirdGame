@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "BirdGame/Public/Character/Bird.h"
 #include "AbstractItem.generated.h"
 
 
@@ -22,6 +23,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float myComfort = 0;
 
+	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -36,5 +39,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	ABird* Bird;
+	UFUNCTION(Blueprintable, BlueprintCallable, Category = "WeaponModel")
+	void AttachComponentToBird(ABird* TargetCharacter);
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon function")
+	void DropItem();
+
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 };
