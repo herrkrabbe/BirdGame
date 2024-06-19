@@ -9,37 +9,47 @@ ABird::ABird()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	SceneRoot= CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	RootComponent = SceneRoot;
-	/*Mesh*/
-	BirdMesh = GetBirdMesh();
-	BirdMesh->SetupAttachment(BirdCollision);
+	//bUseControllerRotationYaw = true;
+	//bUseControllerRotationPitch = false;
+	//bUseControllerRotationRoll = false;
+
+	//SceneRoot= CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	//RootComponent = SceneRoot;
+
 	/*Collision*/
 	BirdCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
-	BirdCollision->SetupAttachment(RootComponent);
+	//BirdCollision->SetupAttachment(SceneRoot);
+
+	/*Mesh*/
+	//BirdMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	//BirdMesh = GetMesh(); // GetBirdMesh();
+	//BirdMesh->SetupAttachment(BirdCollision);
+	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FQuat(FRotator(0.0f, -90.0f, 0.0f)));
+
 	
 	/*Springarm*/
-	/*CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraSpringArm->SetupAttachment(RootComponent);
-	CameraSpringArm->TargetArmLength = StartSpringArmDistance; // The  camera follows at this distance behind the character	
+	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraSpringArm->SetupAttachment(GetMesh());
+	//CameraSpringArm->TargetArmLength = StartSpringArmDistance; // The  camera follows at this distance behind the character	
 	CameraSpringArm->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 	CameraSpringArm->bEnableCameraLag = true;//Makes the camera movement feel smoother
 	//CameraSpringArm->bDoCollisionTest = false; 
-*/
+
 	/*Camera Component*/
-	/*PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
-	PlayerCamera->SetupAttachment(CameraSpringArm); // , USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	PlayerCamera->SetupAttachment(CameraSpringArm, USpringArmComponent::SocketName); // , USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	//PlayerCamera->AttachToComponent(CameraSpringArm, FAttachmentTransformRules::KeepRelativeTransform);
 	//PlayerCamera->bUsePawnControlRotation = true;
 
 	
-	bUseControllerRotationYaw = false;
+	//bUseControllerRotationYaw = false;
 	
-	GetCharacterMovement()->bOrientRotationToMovement = false;
-*/
-	bUseControllerRotationYaw = true;
-	bUseControllerRotationPitch = true;
-	bUseControllerRotationRoll = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+
+	GetCharacterMovement()->bIgnoreBaseRotation = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -97,10 +107,7 @@ void ABird::Land()
 	IsFlying = false;
 }
 
-USkeletalMeshComponent* ABird::GetBirdMesh() const
-{
-	return BirdMesh;
-}
+
 
 void ABird::SetHasItem(bool HasNewItem)
 {

@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	USpringArmComponent* CameraSpringArm;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	/*UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	USceneComponent* SceneRoot;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
@@ -44,8 +44,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Mesh")
 	USkeletalMeshComponent* BirdMesh;
-
-	USkeletalMeshComponent* GetBirdMesh() const;
+*/
+	//USkeletalMeshComponent* GetBirdMesh() const;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Mesh")
 	USphereComponent* BirdCollision;
