@@ -42,12 +42,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	float StartSpringArmDistance = 300.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Mesh")
 	USkeletalMeshComponent* BirdMesh;
 
 	USkeletalMeshComponent* GetBirdMesh() const;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Mesh")
 	USphereComponent* BirdCollision;
 
 

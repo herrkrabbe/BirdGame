@@ -25,13 +25,55 @@ AAbstractItem::AAbstractItem()
 void AAbstractItem::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	ItemCollision->OnComponentBeginOverlap.AddDynamic(this, &AAbstractItem::OnBeginOverlap);
 }
 
 // Called every frame
 void AAbstractItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+}
+
+void AAbstractItem::AttachComponentToBird(ABird* TargetCharacter)
+{
+	Bird = TargetCharacter;
+	if (Bird == nullptr || Bird->GetHasItem())
+	{
+		FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
+		AttachToComponent(Bird->GetBirdMesh(), AttachmentRules, FName(TEXT("AttachSocket")));
+
+		Bird->SetHasItem(true);
+	}
+
+	/*if (APlayerController* BirdController = Cast<APlayerController>(Character->GetController()))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(IMC_Ground, 4);
+		}
+		UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent);
+
+		if (EnhancedInputComponent)
+		{
+			EnhancedInputComponent->BindAction(DropItemAction, ETriggerEvent::Triggered, this, &AAbstractItem::DropItem);
+		}
+	}*/
+
+}
+
+void AAbstractItem::DropItem()
+{
+}
+
+void AAbstractItem::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	Bird = Cast<ABird>(OtherActor);
+	if (Bird != nullptr)
+	{
+		AttachComponentToBird(Bird);
+
+	}
 
 }
 

@@ -13,9 +13,9 @@ ABird::ABird()
 	RootComponent = SceneRoot;
 	/*Mesh*/
 	BirdMesh = GetBirdMesh();
-
+	BirdMesh->SetupAttachment(BirdCollision);
 	/*Collision*/
-	BirdCollision = CreateDefaultSubobject<USphereComponent>(TEXT("ItemCollision"));
+	BirdCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	BirdCollision->SetupAttachment(RootComponent);
 	
 	/*Springarm*/
