@@ -9,33 +9,37 @@ ABird::ABird()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SceneRoot= CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = SceneRoot;
 	/*Mesh*/
 	BirdMesh = GetBirdMesh();
 
 	/*Collision*/
 	BirdCollision = CreateDefaultSubobject<USphereComponent>(TEXT("ItemCollision"));
-	RootComponent = BirdMesh;
 	BirdCollision->SetupAttachment(RootComponent);
 	
 	/*Springarm*/
-	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	/*CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraSpringArm->SetupAttachment(RootComponent);
 	CameraSpringArm->TargetArmLength = StartSpringArmDistance; // The  camera follows at this distance behind the character	
 	CameraSpringArm->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 	CameraSpringArm->bEnableCameraLag = true;//Makes the camera movement feel smoother
 	//CameraSpringArm->bDoCollisionTest = false; 
-
+*/
 	/*Camera Component*/
-	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
-	PlayerCamera->SetupAttachment(CameraSpringArm, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	PlayerCamera->AttachToComponent(CameraSpringArm, FAttachmentTransformRules::KeepRelativeTransform);
-	PlayerCamera->bUsePawnControlRotation = true;
+	/*PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	PlayerCamera->SetupAttachment(CameraSpringArm); // , USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	//PlayerCamera->AttachToComponent(CameraSpringArm, FAttachmentTransformRules::KeepRelativeTransform);
+	//PlayerCamera->bUsePawnControlRotation = true;
 
 	
 	bUseControllerRotationYaw = false;
 	
 	GetCharacterMovement()->bOrientRotationToMovement = false;
-
+*/
+	bUseControllerRotationYaw = true;
+	bUseControllerRotationPitch = true;
+	bUseControllerRotationRoll = false;
 }
 
 // Called when the game starts or when spawned

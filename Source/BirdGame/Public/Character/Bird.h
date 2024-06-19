@@ -19,6 +19,7 @@
 #include "FlightQuaternion.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/PlayerController.h"
+#include "Components/SceneComponent.h"
 #include "Bird.generated.h"
 
 UCLASS()
@@ -35,7 +36,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	USpringArmComponent* CameraSpringArm;
 
-	//USceneComponent as root
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	USceneComponent* SceneRoot;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	float StartSpringArmDistance = 300.0f;
