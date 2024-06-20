@@ -17,6 +17,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "FlightQuaternion.h"
+#include "Math/Quat.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/SceneComponent.h"
@@ -36,22 +37,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	USpringArmComponent* CameraSpringArm;
 
-	/*UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	USceneComponent* SceneRoot;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	float StartSpringArmDistance = 300.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Mesh")
-	USkeletalMeshComponent* BirdMesh;
-*/
-	//USkeletalMeshComponent* GetBirdMesh() const;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Mesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	USphereComponent* BirdCollision;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	//float StartSpringArmDistance = 300.0f;
 
 	/*INPUT*/
+	/*Ground*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputMappingContext* IMC_Ground;
 
@@ -63,6 +56,20 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* LookAroundAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* DropItemAction;
+
+	/*Air*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputMappingContext* IMC_Bird;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* PitchAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* RollAction;
+
 
 	APlayerController* BirdController;
 	UEnhancedInputLocalPlayerSubsystem* Subsystem;
@@ -87,6 +94,7 @@ public:
 	/*QUATERNION*/
 
 	UFlightQuaternion* Quaternion;
+	float RotationSpeed = 1000.f;
 	///////////////////////////////////////////////
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -103,4 +111,6 @@ protected:
 	void Jump(const FInputActionValue& Value);
 	void LookAround(const FInputActionValue& Value);
 	void Land();
+	void DropItem();
+	void Roll();
 };

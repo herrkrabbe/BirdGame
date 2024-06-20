@@ -9,31 +9,19 @@ ABird::ABird()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//bUseControllerRotationYaw = true;
-	//bUseControllerRotationPitch = false;
-	//bUseControllerRotationRoll = false;
-
-	//SceneRoot= CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	//RootComponent = SceneRoot;
-
 	/*Collision*/
 	BirdCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
-	//BirdCollision->SetupAttachment(SceneRoot);
-
+	
 	/*Mesh*/
-	//BirdMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	//BirdMesh = GetMesh(); // GetBirdMesh();
-	//BirdMesh->SetupAttachment(BirdCollision);
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FQuat(FRotator(0.0f, -90.0f, 0.0f)));
 
-	
 	/*Springarm*/
 	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraSpringArm->SetupAttachment(GetMesh());
-	//CameraSpringArm->TargetArmLength = StartSpringArmDistance; // The  camera follows at this distance behind the character	
 	CameraSpringArm->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 	CameraSpringArm->bEnableCameraLag = true;//Makes the camera movement feel smoother
 	//CameraSpringArm->bDoCollisionTest = false; 
+	//CameraSpringArm->TargetArmLength = StartSpringArmDistance; // The  camera follows at this distance behind the character	
 
 	/*Camera Component*/
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
@@ -41,23 +29,15 @@ ABird::ABird()
 	//PlayerCamera->AttachToComponent(CameraSpringArm, FAttachmentTransformRules::KeepRelativeTransform);
 	//PlayerCamera->bUsePawnControlRotation = true;
 
-	
-	//bUseControllerRotationYaw = false;
-	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-
 	GetCharacterMovement()->bIgnoreBaseRotation = true;
-
 }
 
 // Called when the game starts or when spawned
 void ABird::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 
 }
 
@@ -66,14 +46,9 @@ void ABird::Move(const FInputActionValue& Value)
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 	if (Controller != nullptr) {
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-		AddMovementInput(GetActorRightVector(), MovementVector.X);
+		//AddMovementInput(GetActorRightVector(), MovementVector.X);   if we decide to move to the left/right again
 	}
 	
-	//checking if rotation works. move to flight later. 
-	//float QuaternionRotation = Quaternion->q.X;
-	//const FRotator PitchRotation(QuaternionRotation,0.0f,0.0f );
-	//AddMovementInput(GetActorRightVector(), PitchRotation.X);  OR RATHER AddMovementInput(FVector(q.X, 0.0f, 0.0f);
-
 }
 
 void ABird::Jump(const FInputActionValue& Value)
@@ -81,15 +56,15 @@ void ABird::Jump(const FInputActionValue& Value)
 	//trigger fly IMC here 
 	IsFlying = true;
 	
-	/*if (BirdController)
+	if (BirdController)
 	{
 		if (Subsystem)
 		{
-			//Subsystem->RemoveMappingContext(IMC_Ground);
+			Subsystem->RemoveMappingContext(IMC_Ground);
 			Subsystem->AddMappingContext(IMC_Bird, 0);
 			
 		}
-	}*/
+	}
 }
 
 void ABird::LookAround(const FInputActionValue& Value)
@@ -105,6 +80,38 @@ void ABird::LookAround(const FInputActionValue& Value)
 void ABird::Land()
 {
 	IsFlying = false;
+	//probably do something like overlap with ground coliision or check if there is stuff from unreal to check if the bird is on the ground
+
+	//switching back to IMC_Ground
+	//IF THIS DELETES THE IMC, try using active index, so instead of 0 switch to 1 
+	if (BirdController)
+	{
+		if (Subsystem)
+		{
+			Subsystem->RemoveMappingContext(IMC_Bird);
+			Subsystem->AddMappingContext(IMC_Ground, 0);
+
+		}
+	}
+}
+
+void ABird::DropItem()
+{
+	SetHasItem(false);
+	// https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/GameFramework/AActor/DetachFromActor
+}
+
+void ABird::Roll()
+{ 
+	
+	float Roll = InputComponent->GetAxisValue("RotateActorY");
+	const FRotator RollRotation(0.0f, Roll*RotationSpeed, 0.0f);
+	FQuat QuatRotation = RollRotation.Quaternion();
+
+	if (Controller != nullptr) {
+		//AddMovementInput(GetActorForwardVector(), PitchRotation.Y);
+		AddActorLocalRotation(QuatRotation, false, 0, ETeleportType::None);
+	}
 }
 
 
@@ -139,6 +146,7 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		if (Subsystem)
 		{
 			Subsystem->AddMappingContext(IMC_Ground, 0);
+			//Subsystem->AddMappingContext(IMC_Bird, 1);
 		}
 	}
 
@@ -151,6 +159,8 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ABird::LookAround);
 		//read comment below on the right 
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABird::Jump); //just pressed once instead of triggered?
+		EnhancedInputComponent->BindAction(RollAction, ETriggerEvent::Triggered, this, &ABird::Roll);
+
 	}
 	
 }
