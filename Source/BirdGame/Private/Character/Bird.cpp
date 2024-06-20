@@ -53,7 +53,7 @@ void ABird::Move(const FInputActionValue& Value)
 
 void ABird::Jump(const FInputActionValue& Value)
 {
-	
+	GetCharacterMovement()->MaxWalkSpeed = 150.0f;
 	FVector JumpDirection = FVector::UpVector; 
 	float JumpForce = 10.0f; 
 	GetCharacterMovement()->AddForce(JumpDirection * JumpForce);
@@ -66,7 +66,10 @@ void ABird::Jump(const FInputActionValue& Value)
 	float NewVelocity = VectorLength * 1000;
 	GetCharacterMovement()->AddForce(NewVelocity * GetActorUpVector());
 
-	
+	if (IsJumpProvidingForce()) {
+		float AirControl = 1;
+		GetCharacterMovement()->MaxFlySpeed = 10000.0f;
+	}
 
 	//AddMovementInput(GetActorForwardVector(), VectorLength.Y);
 
