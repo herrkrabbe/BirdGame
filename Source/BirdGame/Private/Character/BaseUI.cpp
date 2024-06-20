@@ -7,6 +7,7 @@
 #include "Blueprint/WidgetTree.h"
 #include "Components/HorizontalBox.h"
 #include "Components/HorizontalBoxSlot.h"
+#include "Components/NamedSlot.h"
 
 void UBaseUI::SetFlapsTexture(UTexture2D* EnabledFlap, UTexture2D* DisabledFlap)
 {
@@ -61,4 +62,20 @@ void UBaseUI::SetCurrentFlaps(int NewFlaps)
 			FlapWidget->SetBrushFromTexture(NoFlapTexture);
 		}
 	}
+}
+
+UUserWidget* UBaseUI::DisplayWidget(TSubclassOf<UUserWidget> NewWidget)
+{
+	if (DisplayWidgetSlot->GetChildrenCount() > 0)
+	{
+		DisplayWidgetSlot->ClearChildren();
+	}
+	UUserWidget* CreatedWidget = CreateWidget(this, NewWidget);
+	DisplayWidgetSlot->AddChild(CreatedWidget);
+	return CreatedWidget;
+}
+
+void UBaseUI::ClearDisplayWidget()
+{
+	DisplayWidgetSlot->ClearChildren();
 }

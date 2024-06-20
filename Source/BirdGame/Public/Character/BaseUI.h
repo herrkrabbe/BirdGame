@@ -36,6 +36,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Flight")
 	void SetCurrentFlaps(int NewFlaps);
 
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	UUserWidget* DisplayWidget(TSubclassOf<UUserWidget> NewWidget);
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void ClearDisplayWidget();
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Organization", meta = (BindWidget))
@@ -48,4 +53,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Flight", meta = (BindWidget))
 	UHorizontalBox* WingFlaps;
+
+	UPROPERTY(EditAnywhere, Category = "Organization", meta = (BindWidget))
+	UNamedSlot* DisplayWidgetSlot;
 };

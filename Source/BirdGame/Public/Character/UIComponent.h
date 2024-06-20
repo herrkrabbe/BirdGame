@@ -24,10 +24,14 @@ public:
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UBaseUI> BaseUIClass;
 
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> ControlsWidget;
+
 	UUserWidget* SetUIWidget(TSubclassOf<UBaseUI> WidgetClass);
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	FORCEINLINE UBaseUI* GetUIWidget() { return UIInstance; };
+
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void UpdateHealth(float HealthPercentage);
@@ -49,6 +53,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Flight", meta = (BindWidget))
 	UTexture2D* SpentWingFlap;
+
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void DisplayControls(bool bShouldDisplay);
 
 protected:
 	UPROPERTY()
