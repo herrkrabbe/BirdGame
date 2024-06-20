@@ -53,10 +53,25 @@ void ABird::Move(const FInputActionValue& Value)
 
 void ABird::Jump(const FInputActionValue& Value)
 {
-	//trigger fly IMC here 
+	
+	FVector JumpDirection = FVector::UpVector; 
+	float JumpForce = 10.0f; 
+	GetCharacterMovement()->AddForce(JumpDirection * JumpForce);
+	//AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+
 	IsFlying = true;
 	
-	if (BirdController)
+	FVector UprojectedOnV = GetVelocity().ProjectOnTo(GetActorForwardVector());
+	float VectorLength = UprojectedOnV.Size();
+	float NewVelocity = VectorLength * 1000;
+	GetCharacterMovement()->AddForce(NewVelocity * GetActorUpVector());
+
+	
+
+	//AddMovementInput(GetActorForwardVector(), VectorLength.Y);
+
+	/*Ativate IMC_Bird to fly*/ //WORKS
+	/*if (BirdController)
 	{
 		if (Subsystem)
 		{
@@ -64,7 +79,7 @@ void ABird::Jump(const FInputActionValue& Value)
 			Subsystem->AddMappingContext(IMC_Bird, 0);
 			
 		}
-	}
+	}*/
 }
 
 void ABird::LookAround(const FInputActionValue& Value)
@@ -80,19 +95,23 @@ void ABird::LookAround(const FInputActionValue& Value)
 void ABird::Land()
 {
 	IsFlying = false;
+	GetCharacterMovement()->MaxWalkSpeed = 150.0f;
+	if (GetCharacterMovement()->IsMovingOnGround()) {
+		if (BirdController)
+		{
+			if (Subsystem)
+			{
+				Subsystem->RemoveMappingContext(IMC_Bird);
+				Subsystem->AddMappingContext(IMC_Ground, 0);
+
+			}
+		}
+	}
 	//probably do something like overlap with ground coliision or check if there is stuff from unreal to check if the bird is on the ground
 
 	//switching back to IMC_Ground
 	//IF THIS DELETES THE IMC, try using active index, so instead of 0 switch to 1 
-	if (BirdController)
-	{
-		if (Subsystem)
-		{
-			Subsystem->RemoveMappingContext(IMC_Bird);
-			Subsystem->AddMappingContext(IMC_Ground, 0);
-
-		}
-	}
+	
 }
 
 void ABird::DropItem()
@@ -103,14 +122,21 @@ void ABird::DropItem()
 
 void ABird::Roll()
 { 
-	
+	/*const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0, Rotation.Pitch, 0);
+
+	// Get right vector
+	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+*/
+
 	float Roll = InputComponent->GetAxisValue("RotateActorY");
 	const FRotator RollRotation(0.0f, Roll*RotationSpeed, 0.0f);
 	FQuat QuatRotation = RollRotation.Quaternion();
 
 	if (Controller != nullptr) {
 		//AddMovementInput(GetActorForwardVector(), PitchRotation.Y);
-		AddActorLocalRotation(QuatRotation, false, 0, ETeleportType::None);
+		
+		AddActorLocalRotation(QuatRotation, false, 0, ETeleportType::None); //with quat
 	}
 }
 
