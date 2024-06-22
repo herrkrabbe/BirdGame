@@ -79,3 +79,16 @@ void UUIComponent::SetCurrentFlaps(int NewFlaps)
 	UIInstance->SetCurrentFlaps(NewFlaps);
 }
 
+void UUIComponent::DisplayControls(bool bShouldDisplay)
+{
+	if (!ControlsWidget && !UIInstance)
+		return;
+	
+	if (bShouldDisplay)
+	{
+		UIInstance->DisplayWidget(ControlsWidget);
+		return;
+	}
+	UIInstance->ClearDisplayWidget();
+}
+
