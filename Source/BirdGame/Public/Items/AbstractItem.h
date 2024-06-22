@@ -44,7 +44,7 @@ public:
 	void AttachComponentToBird(ABird* TargetCharacter);
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon function")
-	void DropItem();
+	void DetachFromBird(ABird* TargetCharacter);
 
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

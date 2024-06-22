@@ -20,7 +20,7 @@
 #include "Math/Quat.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/PlayerController.h"
-#include "Components/SceneComponent.h"
+//#include "Items/AbstractItem.h"
 #include "Bird.generated.h"
 
 UCLASS()
@@ -53,6 +53,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* JumpAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* FlyAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* LookAroundAction;
@@ -88,7 +91,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	bool IsFlying = false;
-
+	
+	
 	
 
 	/*QUATERNION*/
@@ -111,6 +115,7 @@ protected:
 	void Jump(const FInputActionValue& Value);
 	void LookAround(const FInputActionValue& Value);
 	void Land();
+	void Roll(const FInputActionValue& Value);
+	void Fly(const FInputActionValue& Value);
 	void DropItem();
-	void Roll();
 };

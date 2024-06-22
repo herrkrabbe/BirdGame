@@ -47,25 +47,35 @@ void AAbstractItem::AttachComponentToBird(ABird* TargetCharacter)
 		Bird->SetHasItem(true);
 	}
 
-	/*if (APlayerController* BirdController = Cast<APlayerController>(Character->GetController()))
+	/*if (APlayerController* BirdController = Cast<APlayerController>(Bird->GetController()))
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(BirdController->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(IMC_Ground, 4);
+			Subsystem->AddMappingContext(Bird->IMC_Ground, 3);
 		}
-		UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerController->InputComponent);
+		UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(BirdController->InputComponent);
 
 		if (EnhancedInputComponent)
 		{
-			EnhancedInputComponent->BindAction(DropItemAction, ETriggerEvent::Triggered, this, &AAbstractItem::DropItem);
+			EnhancedInputComponent->BindAction(Bird->DropItemAction, ETriggerEvent::Triggered, this, &AAbstractItem::Bird->DropItem);
 		}
 	}*/
 
 }
 
-void AAbstractItem::DropItem()
+void AAbstractItem::DetachFromBird(ABird* TargetCharacter)
 {
+	Bird = TargetCharacter;
+	if (Bird != nullptr || Bird->GetHasItem())
+	{
+		FDetachmentTransformRules DetachmentRules(EDetachmentRule::KeepRelative, true); //SnapToTargetNotIncludingScale
+		//DetachFromComponent(Bird->GetMesh(), DetachmentRules));
+
+		Bird->SetHasItem(false);
+	}
+
 }
+
 
 void AAbstractItem::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
