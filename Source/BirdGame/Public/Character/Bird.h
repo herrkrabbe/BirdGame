@@ -106,6 +106,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Euler To Quaternion", Keywords = "rotation, quaterion"), Category = "Quaternion Rotation")
+	static FQuat Euler_To_Quaternion(FRotator Current_Rotation);
+
+	// Function to add delta rotation to current local rotation of Actor
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Add Actor Local Rotation (Quaternion)", Keywords = "rotation, quaternion"), Category = "Quaternion Rotation")
+	static void AddActorLocalRotationQuat(ABird* Actor, const FQuat& q);
 
 protected:
 	// Called when the game starts or when spawned
@@ -118,4 +124,6 @@ protected:
 	void Roll(const FInputActionValue& Value);
 	void Fly(const FInputActionValue& Value);
 	void DropItem();
+
+	
 };

@@ -40,7 +40,7 @@ ABird::ABird()
 void ABird::BeginPlay()
 {
 	Super::BeginPlay();
-
+	IsFlying = false;
 }
 
 /*TICK*/
@@ -59,6 +59,8 @@ void ABird::Tick(float DeltaTime)
 		IsFlying = false;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("WALK"));
 	}
+
+	
 }
 
 /*MOVE*/
@@ -89,14 +91,6 @@ void ABird::Jump(const FInputActionValue& Value)
 	GetCharacterMovement()->AddForce(NewVelocity * GetActorUpVector());
 	if (IsFlying == true) {
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-		/*Ativate IMC_Bird to fly*/ //WORKS
-		/*if (BirdController)
-		{
-			if (Subsystem) {
-				IMC_Ground->Disable();
-
-			}
-		}*/
 	}
 	else {
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SWITCH IMC"));
@@ -139,10 +133,37 @@ void ABird::DropItem()
 	// https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/GameFramework/AActor/DetachFromActor
 }
 
+void ABird::AddActorLocalRotationQuat(ABird* Actor, const FQuat& q)
+{
+	if (Actor)
+	{
+		Actor->AddActorLocalRotation(q);
+	}
+}
+
 
 /*ROLL*/
 void ABird::Roll(const FInputActionValue& Value)
 { 
+	
+	FRotator NewRotationX = FRotator(0.0f, 0.0f, 10.0f);
+	FQuat N= Euler_To_Quaternion(NewRotationX);
+	FRotator Rotation(N);
+	
+
+	BirdController->SetControlRotation(Rotation);
+
+	
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("RotateValue: %s"), *RotateValue.ToString()));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("AngleAxis: %f"), AngleAxis));
+	//FRotator CurrentRotation; // Your starting rotation
+	//FRotator NewRotation; // Your target rotation
+	//float Alpha = 0.5f; // Interpolation factor (0.0 to 1.0)
+	//FRotator NewRotationX = FQuat::Slerp(CurrentRotation.Quaternion(), NewRotation.Quaternion(), Alpha);
+
+	
+	
 	if (Controller)
 	{
 		//rotates the whole screen instead of just bird;
@@ -155,12 +176,17 @@ void ABird::Roll(const FInputActionValue& Value)
 		// Set the modified control rotation
 		//BirdController->SetControlRotation(QuatRotation);
 */
-		
-		FVector RotationDegree = Value.Get<FVector>();
-		float VectorLength = RotationDegree.Size();
-		FRotator RollRotation = FRotator(0, 0, 0);
-		RollRotation.Pitch = VectorLength;
-		GetMesh()->AddLocalRotation(FQuat(RollRotation));
+		if (IsFlying == true) {
+			
+			/*FVector RotationDegree = Value.Get<FVector>();
+			float VectorLength = RotationDegree.Size();
+			FRotator RollRotation = FRotator(0, 0, 0);
+			RollRotation.Pitch = VectorLength;
+			GetMesh()->AddLocalRotation(FQuat(RollRotation));*/
+		}
+		else {
+			//GetMesh()->SetLocalRotation(0, 0, 0);
+		}
 	}
 }
 
@@ -225,5 +251,27 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(DropItemAction, ETriggerEvent::Triggered, this, &ABird::DropItem);
 	}
 	
+}
+
+FQuat ABird::Euler_To_Quaternion(FRotator Current_Rotation)
+{
+	FQuat q;                                            // Declare output quaternion
+	float yaw = Current_Rotation.Yaw * PI / 180;        // Convert degrees to radians 
+	float roll = Current_Rotation.Roll * PI / 180;
+	float pitch = Current_Rotation.Pitch * PI / 180;
+
+	double cy = cos(yaw * 0.5);
+	double sy = sin(yaw * 0.5);
+	double cr = cos(roll * 0.5);
+	double sr = sin(roll * 0.5);
+	double cp = cos(pitch * 0.5);
+	double sp = sin(pitch * 0.5);
+
+	q.W = cy * cr * cp + sy * sr * sp;
+	q.X = cy * sr * cp - sy * cr * sp;
+	q.Y = cy * cr * sp + sy * sr * cp;
+	q.Z = sy * cr * cp - cy * sr * sp;
+
+	return q;
 }
 
