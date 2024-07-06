@@ -15,6 +15,10 @@ ABird::ABird()
 	BirdCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	
 	/*Mesh*/
+	/*Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh"));
+	Mesh->SetupAttachment(CameraSpringArm);
+	Mesh->bCastDynamicShadow = true;
+	Mesh->CastShadow = true;*/
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FQuat(FRotator(0.0f, -90.0f, 0.0f)));
 
 	/*Springarm*/
@@ -85,7 +89,7 @@ void ABird::Jump(const FInputActionValue& Value)
 	//AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 
 	//SECOND WAY OF LIFTING
-	FVector UprojectedOnV = GetVelocity().ProjectOnTo(GetActorForwardVector());
+	/*FVector UprojectedOnV = GetVelocity().ProjectOnTo(GetActorForwardVector());
 	float VectorLength = UprojectedOnV.Size();
 	float NewVelocity = VectorLength * 1000;
 	GetCharacterMovement()->AddForce(NewVelocity * GetActorUpVector());
@@ -95,7 +99,7 @@ void ABird::Jump(const FInputActionValue& Value)
 	else {
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("SWITCH IMC"));
 		Land();
-	}
+	}*/
 	
 	
 }
@@ -125,13 +129,7 @@ void ABird::Land()
 }
 
 
-/*DROP ITEM*/
-void ABird::DropItem()
-{
-	SetHasItem(false);
-	//Item->DetachFromBird(AAbstractItem * TargetCharacter);
-	// https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/GameFramework/AActor/DetachFromActor
-}
+
 
 void ABird::AddActorLocalRotationQuat(ABird* Actor, const FQuat& q)
 {
@@ -145,25 +143,7 @@ void ABird::AddActorLocalRotationQuat(ABird* Actor, const FQuat& q)
 /*ROLL*/
 void ABird::Roll(const FInputActionValue& Value)
 { 
-	
-	FRotator NewRotationX = FRotator(0.0f, 0.0f, 10.0f);
-	FQuat N= Euler_To_Quaternion(NewRotationX);
-	FRotator Rotation(N);
-	
-
-	BirdController->SetControlRotation(Rotation);
-
-	
-
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("RotateValue: %s"), *RotateValue.ToString()));
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("AngleAxis: %f"), AngleAxis));
-	//FRotator CurrentRotation; // Your starting rotation
-	//FRotator NewRotation; // Your target rotation
-	//float Alpha = 0.5f; // Interpolation factor (0.0 to 1.0)
 	//FRotator NewRotationX = FQuat::Slerp(CurrentRotation.Quaternion(), NewRotation.Quaternion(), Alpha);
-
-	
-	
 	if (Controller)
 	{
 		//rotates the whole screen instead of just bird;
@@ -178,6 +158,10 @@ void ABird::Roll(const FInputActionValue& Value)
 */
 		if (IsFlying == true) {
 			
+			FRotator NewRotationX = FRotator(0.0f, 0.0f, 10.0f);
+			FQuat N = Euler_To_Quaternion(NewRotationX);//Transforms to quat
+			FRotator Rotation(N);
+			BirdController->SetControlRotation(Rotation);
 			/*FVector RotationDegree = Value.Get<FVector>();
 			float VectorLength = RotationDegree.Size();
 			FRotator RollRotation = FRotator(0, 0, 0);
@@ -185,7 +169,7 @@ void ABird::Roll(const FInputActionValue& Value)
 			GetMesh()->AddLocalRotation(FQuat(RollRotation));*/
 		}
 		else {
-			//GetMesh()->SetLocalRotation(0, 0, 0);
+			//GetMesh()->ResetRotation(0, 0, 0);
 		}
 	}
 }
@@ -198,15 +182,11 @@ void ABird::Fly(const FInputActionValue& Value)
 	GetCharacterMovement()->AddForce(NewVelocity * GetActorUpVector());
 	if (IsFlying == true) {
 		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-		/*Ativate IMC_Bird to fly*/ //WORKS
-		/*if (BirdController)
-		{
-			if (Subsystem) {
-				IMC_Ground->Disable();
-
-			}
-		}*/
 	}
+}
+
+void ABird::DropItem()
+{
 }
 
 
@@ -243,8 +223,7 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	if (EnhancedInputComponent) {
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
-		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ABird::LookAround);
-		//read comment below on the right 
+		EnhancedInputComponent->BindAction(LookAroundAction, ETriggerEvent::Triggered, this, &ABird::LookAround); 
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABird::Jump);
 		EnhancedInputComponent->BindAction(FlyAction, ETriggerEvent::Triggered, this, &ABird::Fly); //just pressed once instead of triggered?
 		EnhancedInputComponent->BindAction(RollAction, ETriggerEvent::Triggered, this, &ABird::Roll);

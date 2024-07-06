@@ -5,6 +5,8 @@
 #include "Components/SphereComponent.h"
 #include "Engine/EngineTypes.h"
 #include "Components/StaticMeshComponent.h"
+#include "Engine/GameEngine.h"
+
 
 // Sets default values
 AAbstractItem::AAbstractItem()
@@ -36,44 +38,55 @@ void AAbstractItem::Tick(float DeltaTime)
 
 }
 
-void AAbstractItem::AttachComponentToBird(ABird* TargetCharacter)
+bool AAbstractItem::AttachComponentToBird(ABird* TargetCharacter)
 {
 	Bird = TargetCharacter;
-	if (Bird != nullptr || Bird->GetHasItem())
+	if (Bird == nullptr || Bird->GetInstanceComponents().FindItemByClass<AAbstractItem>())
 	{
+		return false;
+	}
+	
+	else {
 		FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true); //SnapToTargetNotIncludingScale
 		AttachToComponent(Bird->GetMesh(), AttachmentRules, FName(TEXT("AttachSocket")));
-
 		Bird->SetHasItem(true);
-	}
 
-	/*if (APlayerController* BirdController = Cast<APlayerController>(Bird->GetController()))
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("ITEMMMMMMMMMMMMMMMMMMMMMMMMM"));
+	//Bird->AddInstanceComponent(this);
+	
+
+	if (APlayerController* BirdController = Cast<APlayerController>(Bird->GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(BirdController->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(Bird->IMC_Ground, 3);
+			Subsystem->AddMappingContext(Bird->IMC_Ground, 1);
 		}
-		UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(BirdController->InputComponent);
-
-		if (EnhancedInputComponent)
-		{
-			EnhancedInputComponent->BindAction(Bird->DropItemAction, ETriggerEvent::Triggered, this, &AAbstractItem::Bird->DropItem);
+		if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(BirdController->InputComponent)){
+			
+			EnhancedInputComponent->BindAction(Bird->DropItemAction, ETriggerEvent::Triggered, this, &AAbstractItem::DropItem);
 		}
-	}*/
+	}
 
+	return true;
 }
 
 void AAbstractItem::DetachFromBird(ABird* TargetCharacter)
 {
 	Bird = TargetCharacter;
-	if (Bird != nullptr || Bird->GetHasItem())
+	if (Bird != nullptr)
 	{
-		FDetachmentTransformRules DetachmentRules(EDetachmentRule::KeepRelative, true); //SnapToTargetNotIncludingScale
-		//DetachFromComponent(Bird->GetMesh(), DetachmentRules));
-
-		Bird->SetHasItem(false);
+		
+		FDetachmentTransformRules DetachmentRules(EDetachmentRule::KeepWorld, true); //SnapToTargetNotIncludingScale
+		DetachFromActor(DetachmentRules);
+		Bird->SetHasItem(true);
 	}
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, TEXT("--------------------detach------------------------------"));
+}
 
+void AAbstractItem::DropItem()
+{
+	DetachFromBird(Bird);
 }
 
 

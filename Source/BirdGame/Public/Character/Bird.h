@@ -31,6 +31,12 @@ class BIRDGAME_API ABird : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ABird();
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true"))
+	//USkeletalMeshComponent* Mesh;
+
+	//USkeletalMeshComponent* GetMesh();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	UCameraComponent* PlayerCamera;
 
@@ -77,7 +83,7 @@ public:
 	APlayerController* BirdController;
 	UEnhancedInputLocalPlayerSubsystem* Subsystem;
 
-
+	
 	/*ITEM*/
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Item")
